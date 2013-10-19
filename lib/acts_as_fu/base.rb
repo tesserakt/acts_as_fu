@@ -1,5 +1,11 @@
+PLATFORM = ($platform || RUBY_PLATFORM[/java/] || 'ruby') unless defined?(PLATFORM)
+
 require 'active_record'
-require 'active_record/connection_adapters/sqlite3_adapter' 
+if PLATFORM == 'java'
+  require 'jdbc/sqlite3'
+else
+  require 'active_record/connection_adapters/sqlite3_adapter'
+end
 require 'logger'
 
 RAILS_ROOT = File.join(File.dirname(__FILE__), '..') unless defined?(RAILS_ROOT)
@@ -48,10 +54,17 @@ module ActsAsFu
   private
 
   def connect!
-    ActsAsFu::Connection.connect!({
-      :adapter => "sqlite3",
-      :database => ":memory:"
-    })
+    if PLATFORM == 'java'
+      ActsAsFu::Connection.connect!({
+          :adapter => "jdbcsqlite3",
+          :database => ":memory:"
+      })
+    else
+      ActsAsFu::Connection.connect!({
+          :adapter => "sqlite3",
+          :database => ":memory:"
+      })
+    end
     ActsAsFu::Connection.connected = true
   end
 
