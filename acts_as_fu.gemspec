@@ -20,15 +20,20 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activerecord>, [">= 0"])
-      s.add_runtime_dependency(%q<sqlite3>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 1.3"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
     else
       s.add_dependency(%q<activerecord>, [">= 0"])
-      s.add_dependency(%q<sqlite3>, [">= 0"])
     end
   else
     s.add_dependency(%q<activerecord>, [">= 0"])
-    s.add_dependency(%q<sqlite3>, [">= 0"])
   end
+  
+  case RUBY_PLATFORM
+  when 'java'
+    gem.add_runtime_dependency 'activerecord-jdbcsqlite3-adapter'
+  else
+    gem.add_runtime_dependency 'sqlite3'
+  end
+  
 end
