@@ -31,9 +31,9 @@ Gem::Specification.new do |s|
   
   case RUBY_PLATFORM
   when 'java'
-    gem.add_runtime_dependency 'activerecord-jdbcsqlite3-adapter'
+    s.add_runtime_dependency 'activerecord-jdbcsqlite3-adapter'
   else
-    gem.add_runtime_dependency 'sqlite3'
+    s.add_runtime_dependency 'sqlite3'
   end
   
 end
